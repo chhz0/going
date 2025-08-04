@@ -1,0 +1,12 @@
+env: dev
+app: config_example
+
+http:
+  host: localhost
+  port: 80
+
+mysql:
+  url: localhost:3306
+  db: db_name
+  user: root
+  password: password
