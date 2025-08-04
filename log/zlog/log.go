@@ -8,6 +8,7 @@ import (
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"gorm.io/gorm/logger"
 )
 
 // ILogger 基础日志接口
@@ -66,6 +67,10 @@ type Logger interface {
 	V(lvl Level) ILogger
 
 	Sync()
+}
+
+type LoggerExtend interface {
+	logger.Interface // gorm.logger
 }
 
 type Level = zapcore.Level
@@ -258,7 +263,7 @@ func WithName(name string) Logger {
 }
 
 func (l *zapLogger) WithFields(fields ...Field) Logger {
-	var newLogger *zap.Logger
+	newLogger := l.l
 	if len(fields) > 0 {
 		newLogger = l.l.With(fields...)
 	}
@@ -291,7 +296,7 @@ func (l *zapLogger) WithContext(ctx context.Context, keys ...string) Logger {
 	}
 
 	if len(fields) > 0 {
-		newLogger.l.With(fields...)
+		newLogger.l = newLogger.l.With(fields...)
 	}
 	return newLogger
 }
@@ -320,8 +325,18 @@ func (l *zapLogger) Sync() {
 	}
 }
 
+func (l *zapLogger) SyncWithHandler(handler func(error)) {
+	if err := l.l.Sync(); err != nil && handler != nil {
+		handler(err)
+	}
+}
+
 func Sync() {
 	std.Load().Sync()
+}
+
+func SyncWithHandler(handler func(error)) {
+	std.Load().SyncWithHandler(handler)
 }
 
 func (l *zapLogger) SetLevel(lvl Level) {
@@ -386,13 +401,13 @@ func newCore(out io.Writer, lvl Level, encoder EncoderType) (zapcore.Core, *zap.
 	}
 
 	return zapcore.NewCore(
-		coreEncoder(encoder, enc),
+		switchEncoder(encoder, enc),
 		zapcore.AddSync(out),
 		atomicl,
 	), &atomicl
 }
 
-func coreEncoder(encoder EncoderType, encoderConfig *zapcore.EncoderConfig) zapcore.Encoder {
+func switchEncoder(encoder EncoderType, encoderConfig *zapcore.EncoderConfig) zapcore.Encoder {
 	switch encoder {
 	case ConsoleEncoder:
 		return zapcore.NewConsoleEncoder(*encoderConfig)

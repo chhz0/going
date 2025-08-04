@@ -40,7 +40,7 @@ func newTee(tees []TeeOption, encoder EncoderType, opts ...ZapLoggerOption) *zap
 			EncodeCaller:   zapcore.ShortCallerEncoder,
 		}
 		core := zapcore.NewCore(
-			coreEncoder(encoder, encoderConfig),
+			switchEncoder(encoder, encoderConfig),
 			zapcore.AddSync(tee.Output),
 			zap.LevelEnablerFunc(tee.LevelEnableFunc),
 		)
