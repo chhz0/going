@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/chhz0/going"
+	"github.com/chhz0/going/pkg/config"
 )
 
 type Config struct {
@@ -26,7 +26,7 @@ type Mysql struct {
 
 func main() {
 	conf := Config{}
-	cv, err := going.NewConfigV(conf)
+	cv, err := config.NewConfigV(conf)
 	if err != nil {
 		panic(err)
 	}
