@@ -11,12 +11,12 @@ import (
 )
 
 var (
-	version        = ""
+	version        = "v0.0.0-master+$Format:%h$"
 	gitCommit      = ""
 	gitCommitStamp = ""
 	gitBranch      = ""
 	gitState       = ""
-	buildDate      = ""
+	buildDate      = "1970-01-01T00:00:00Z"
 )
 
 type Info struct {
@@ -77,15 +77,15 @@ func Text() string {
 	table.RightAlign(0)
 	table.MaxColWidth = 80
 	table.Separator = " "
-	table.AddRow("version", info.Version)
-	table.AddRow("git commit", info.GitCommit)
-	table.AddRow("git commit data", info.GitCommitDate)
-	table.AddRow("git branch", info.GitBranch)
-	table.AddRow("git state", info.GitState)
-	table.AddRow("build date", info.BuildDate)
-	table.AddRow("go version", info.GoVersion)
-	table.AddRow("compiler", info.Compiler)
-	table.AddRow("platform", info.Platform)
+	table.AddRow("Version", info.Version)
+	table.AddRow("Git Commit", info.GitCommit)
+	table.AddRow("Git Commit Data", info.GitCommitDate)
+	table.AddRow("Git Branch", info.GitBranch)
+	table.AddRow("Git State", info.GitState)
+	table.AddRow("Build Date", info.BuildDate)
+	table.AddRow("Go Version", info.GoVersion)
+	table.AddRow("Compiler", info.Compiler)
+	table.AddRow("Platform", info.Platform)
 
 	return table.String()
 }

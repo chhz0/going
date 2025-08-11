@@ -7,7 +7,7 @@ get_git_info() {
     # --dirty: If there are modifications in the working directory, append the -dirty suffix.
     # --tags: Use all tags.
     # --abbrev=7: Shorten the commit hash to 7 characters.
-    VERSION_INFO=$(git describe --always --dirty=-dev --tags --abbrev=7 2>/dev/null || echo "v0.0.0-dev")
+    VERSION_INFO=$(git describe --always --tags --match='v*' 2>/dev/null || echo "v0.0.0")
 
     GIT_COMMIT=$(git rev-parse HEAD 2>/dev/null || echo "")
     GIT_COMMIT_STAMP=$(git show -s --format=%ct 2>/dev/null || echo "")

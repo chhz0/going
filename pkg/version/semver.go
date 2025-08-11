@@ -44,5 +44,5 @@ func parseSemVer(version string) *SemVer {
 }
 
 func IsDevVersion() bool {
-	return strings.Contains(gitCommit, "dev")
+	return !strings.Contains(gitCommit, "dev")
 }
