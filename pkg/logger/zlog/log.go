@@ -101,6 +101,10 @@ func init() {
 	std.Store(stdlog)
 }
 
+func ReplaceDefault(l Logger) {
+	std.Store(l.(*zapLogger))
+}
+
 type zapLogger struct {
 	l   *zap.Logger
 	lvl *zap.AtomicLevel

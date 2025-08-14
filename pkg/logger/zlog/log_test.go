@@ -288,4 +288,3 @@ func TestGlobalLoggerSingleton(t *testing.T) {
 		t.Errorf("Expected message 'global warn message', got %q", warnLogs[0].Message)
 	}
 }
-
