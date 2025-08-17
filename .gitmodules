@@ -1,0 +1,3 @@
+[submodule "example/version"]
+	path = example/version
+	url = https://github.com/chhz0/go-version-test.git
